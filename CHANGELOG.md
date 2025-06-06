@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.X - (2025-XX-XX)
+
+**🐛 Corrections**
+
+- Correction de la génération de PDF (#110, by @juggler31)
+
 ## 1.2.0 - La Brenne (2023-10-17)
 
 Nécessite la version 2.13.3 (ou plus) de GeoNature.
