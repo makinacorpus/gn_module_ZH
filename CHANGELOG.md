@@ -4,7 +4,7 @@
 
 **🚀 Nouveautés**
 
-- [MODEL] Ajout des champs `is_product_owner`, `maitre_ouvrage`, `echelle_saisie`, `ref_geo_saisie`. @juggler31, @edelclaux [#126](https://github.com/PnX-SI/gn_module_ZH/pull/126) [#150](https://github.com/PnX-SI/gn_module_ZH/pull/150)
+- [DATA] Ajout des champs `is_product_owner`, `maitre_ouvrage`, `echelle_saisie`, `ref_geo_saisie`. @juggler31, @edelclaux [#126](https://github.com/PnX-SI/gn_module_ZH/pull/126) [#150](https://github.com/PnX-SI/gn_module_ZH/pull/150)
 - [FRONTEND] Focus automatique de l'input sur la recherche lors de la manipulation d'une `zh-multiselect`. @edelclaux [#133](https://github.com/PnX-SI/gn_module_ZH/pull/133)
 - [FRONTEND] Ajout de l'option "Affichage des autres ZH lors de l'ajout d'une ZH". @edelclaux [#134](https://github.com/PnX-SI/gn_module_ZH/pull/134)
 - [FRONTEND] Mise à jour d'u libellé : “Fonctions et valeurs majeures” en “Fonctions, intérêts et valeurs majeures”. @edelclaux [#147](https://github.com/PnX-SI/gn_module_ZH/pull/147)
@@ -17,13 +17,14 @@
 - [TESTS] Ajout des tests backend. @juggler31 [#120](https://github.com/PnX-SI/gn_module_ZH/pull/120)
 - [TESTS] Ajout d’une migration alembic `zh-sample-data` pour créer une ZH de test. @edelclaux [#139](https://github.com/PnX-SI/gn_module_ZH/pull/139)
 - [DOCUMENTATION] Ajout d’une doc sur les permissions dans l’admin GeoNature. @juggler31 [#124](https://github.com/PnX-SI/gn_module_ZH/pull/124)
+- [DEV] Mise à jour de black (lint backend) à la version 26.1. @edelclaux
 
 **🐛 Corrections**
 
 - [BDD] Mise en compatibilié du schéma avec le model, et inversement (ajout de clef étrangère, etc.). @edelclaux [#146](https://github.com/PnX-SI/gn_module_ZH/pull/146)
-- Correction d’une double déclaration en config. @edelclaux
+- [CONFIG] Correction d’une double déclaration en config. @edelclaux
 - [FRONTEND] Affichage du bouton d’annulation `cancelButton` à l’onglet 9. @juggler31 [#115](https://github.com/PnX-SI/gn_module_ZH/pull/115)
-- Normalisation de `module.config.ts` (lint à l’installation). @edelclaux
+- [MODULE] Normalisation de `module.config.ts` (lint à l’installation). @edelclaux
 
 **⚠️ Notes de version**
 
@@ -34,11 +35,7 @@
   - FK CorRbRules.rb_id -> TRiverBasin.id_rb
   - FK CorZhNotes.note_type_id -> BibNoteTypes.note_id
   - FK TZH.main_pict_id -> TMedias.id_media
-  Il est préféable de vérifier la faisabilité de l'ajout de ces FKs, et de corriger les éventuels problèmes avant de réaliser la miseà jour.
-
-**🧩 Autres**
-
-- Lint/black passé à 26.1. @edelclaux
+  Il est préféable de vérifier la faisabilité de l'ajout de ces FKs, et de corriger les éventuels problèmes avant de réaliser la mise à jour.
 
 **📝 Contributeurs**
 
