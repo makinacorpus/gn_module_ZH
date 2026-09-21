@@ -172,9 +172,9 @@ def filter_area(query, json: dict, type_code: str):
     if any(code is None for code in codes):
         return query
 
-    # Filter on departments
+    # Filter on Territory
     subquery = (
-        select(LAreas.area_name, LAreas.geom, LAreas.id_type, BibAreasTypes.type_code)
+        select(LAreas.geom_4326, LAreas.area_name, LAreas.geom, LAreas.id_type, BibAreasTypes.type_code)
         .join(BibAreasTypes, LAreas.id_type == BibAreasTypes.id_type)
         .where(BibAreasTypes.type_code == type_code, LAreas.area_code.in_(codes))
         .subquery()
@@ -183,7 +183,7 @@ def filter_area(query, json: dict, type_code: str):
     # Filter on geom.
     # Need to use (c) on subquery to get the column
     query = query.where(
-        func.ST_Transform(func.ST_SetSRID(TZH.geom, 4326), 2154).ST_Intersects(subquery.c.geom)
+        TZH.geom.ST_Intersects(subquery.c.geom_4326)
     )
 
     return query
