@@ -140,12 +140,21 @@ export class ZhDataService {
   }
 
   getGeographicType() {
-    return this._api.get(`${this.config.API_ENDPOINT}/zones_humides/geographic_types`);
+    let allPromise = [];
+    this.config.ZONES_HUMIDES.ref_geo_referentiels.forEach((ref_geo_referentiel) => {
+      if (ref_geo_referentiel.active === true) {
+        allPromise.push(
+          this._api.get(
+            `${this.config.API_ENDPOINT}/geo/types?code=${ref_geo_referentiel.type_code_ref_geo}`
+          )
+        );
+      }
+    });
+    return allPromise;
   }
 
   getTerritories(ids_type: string[]) {
-    const payload = { ids_type: ids_type };
-    return this._api.post(`${this.config.API_ENDPOINT}/zones_humides/territories`, payload);
+    return this._api.get(`${this.config.API_ENDPOINT}/geo/areas?id_type=${ids_type.join(',')}`);
   }
 
   getBasins() {

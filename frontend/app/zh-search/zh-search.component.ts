@@ -61,11 +61,15 @@ export class ZhSearchComponent implements OnInit {
         this.displayError(frontMsg);
       });
 
-    this._dataService
-      .getGeographicType()
-      .toPromise()
+    Promise.all(this._dataService.getGeographicType().map((obs) => obs.toPromise()))
       .then((resp: any) => {
-        this.geographic_types = resp;
+        this.geographic_types = resp.reduce((accumulator, currentValue) => {
+          return [...accumulator, {
+            "code": currentValue[0].type_code,
+            "name": currentValue[0].type_name,
+            "id_type": currentValue[0].id_type
+          }]
+        }, []);
       })
       .catch((error) => {
         const frontMsg: string = this._error.getFrontError(error.error.message);
@@ -116,7 +120,6 @@ export class ZhSearchComponent implements OnInit {
       this.types_territories = event[0] as TerritoryType[];
 
       this.types_territories.forEach((element) => {
-        console.log(element);
         const controlName = element.code;
         territoriesGroup.addControl(controlName, new FormControl([]));
       });
@@ -127,7 +130,20 @@ export class ZhSearchComponent implements OnInit {
         .getTerritories(ids_type)
         .toPromise()
         .then((resp: any) => {
-          this.territories = resp || {};
+          this.territories = resp.reduce(
+            (accumulator, currentValue) => {
+              if (!accumulator[currentValue.area_type.type_code]) {
+                accumulator[currentValue.area_type.type_code] = [];
+              }
+              accumulator[currentValue.area_type.type_code].push({
+                id_type: currentValue.id_area,
+                name: currentValue.area_name,
+                code: currentValue.area_code,
+              });
+              return accumulator;
+            },
+            [],
+          );
         });
     }
   }
