@@ -22,16 +22,18 @@ class TestFilters:
                 # print("\n\n\n ref_geo", ref_geo[""], " \n\n\n")
         set_logged_user(self.client, users["admin_user"])
 
-        response = self.client.post(url_for("pr_zh.get_zh"),json=
-        {
-            "territories":
-                {"ZNIEFF2":
-                     [
-                         {"code": "930012713",
-                          "name": "Clue de vergons - barre de pinadoux"
-                          }]}})
+        response = self.client.post(
+            url_for("pr_zh.get_zh"),
+            json={
+                "territories": {
+                    "ZNIEFF2": [
+                        {"code": "930012713", "name": "Clue de vergons - barre de pinadoux"}
+                    ]
+                }
+            },
+        )
         # for larea in ref_geo_data:
-            # break
+        # break
         assert response.status_code == 200
         data = response.get_json()
         #

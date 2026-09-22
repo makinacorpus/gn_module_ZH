@@ -17,7 +17,8 @@ depends_on = None
 
 
 def upgrade():
-    op.execute("""
+    op.execute(
+        """
             DROP VIEW pr_zh.rb_notes_summary;
 
             -- pr_zh.rb_notes_summary source
@@ -107,11 +108,13 @@ def upgrade():
                 rub8.note
             ORDER BY
                 rb.id_rb;
-        """)
+        """
+    )
 
 
 def downgrade():
-    op.execute("""
+    op.execute(
+        """
             DROP MATERIALIZED VIEW pr_zh.rb_notes_summary;
 
             -- pr_zh.rb_notes_summary source
@@ -201,4 +204,5 @@ def downgrade():
                 rub8.note
             ORDER BY
                 rb.id_rb;
-        """)
+        """
+    )

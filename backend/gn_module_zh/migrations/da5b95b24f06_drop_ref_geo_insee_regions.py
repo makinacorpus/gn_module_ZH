@@ -21,7 +21,8 @@ def upgrade():
 
 
 def downgrade():
-    op.execute("""
+    op.execute(
+        """
         CREATE TABLE IF NOT EXISTS ref_geo.insee_regions (
             insee_reg varchar(2) NOT NULL, 
             region_name varchar(50) NOT NULL,
@@ -50,4 +51,5 @@ def downgrade():
             ('94','Corse')
             ON CONFLICT (insee_reg) DO NOTHING
         ;
-        """)
+        """
+    )

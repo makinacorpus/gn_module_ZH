@@ -64,11 +64,14 @@ export class ZhSearchComponent implements OnInit {
     Promise.all(this._dataService.getGeographicType().map((obs) => obs.toPromise()))
       .then((resp: any) => {
         this.geographic_types = resp.reduce((accumulator, currentValue) => {
-          return [...accumulator, {
-            "code": currentValue[0].type_code,
-            "name": currentValue[0].type_name,
-            "id_type": currentValue[0].id_type
-          }]
+          return [
+            ...accumulator,
+            {
+              code: currentValue[0].type_code,
+              name: currentValue[0].type_name,
+              id_type: currentValue[0].id_type,
+            },
+          ];
         }, []);
       })
       .catch((error) => {
@@ -130,20 +133,17 @@ export class ZhSearchComponent implements OnInit {
         .getTerritories(ids_type)
         .toPromise()
         .then((resp: any) => {
-          this.territories = resp.reduce(
-            (accumulator, currentValue) => {
-              if (!accumulator[currentValue.area_type.type_code]) {
-                accumulator[currentValue.area_type.type_code] = [];
-              }
-              accumulator[currentValue.area_type.type_code].push({
-                id_type: currentValue.id_area,
-                name: currentValue.area_name,
-                code: currentValue.area_code,
-              });
-              return accumulator;
-            },
-            [],
-          );
+          this.territories = resp.reduce((accumulator, currentValue) => {
+            if (!accumulator[currentValue.area_type.type_code]) {
+              accumulator[currentValue.area_type.type_code] = [];
+            }
+            accumulator[currentValue.area_type.type_code].push({
+              id_type: currentValue.id_area,
+              name: currentValue.area_name,
+              code: currentValue.area_code,
+            });
+            return accumulator;
+          }, []);
         });
     }
   }

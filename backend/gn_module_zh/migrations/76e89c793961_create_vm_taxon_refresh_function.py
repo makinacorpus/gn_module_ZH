@@ -17,7 +17,8 @@ depends_on = None
 
 
 def upgrade():
-    op.execute("""
+    op.execute(
+        """
             CREATE OR REPLACE FUNCTION pr_zh.refresh_taxon_materialized_views()
                 RETURNS void
                 LANGUAGE plpgsql
@@ -29,10 +30,13 @@ def upgrade():
             END;
             $function$
             ;
-        """)
+        """
+    )
 
 
 def downgrade():
-    op.execute("""
+    op.execute(
+        """
             DROP FUNCTION pr_zh.refresh_taxon_materialized_views();
-        """)
+        """
+    )

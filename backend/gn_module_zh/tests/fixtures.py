@@ -40,6 +40,7 @@ def create_zh(
     )
     return zh
 
+
 @pytest.fixture(scope="function")
 def zh_data(users):
     date = datetime.datetime(2024, 10, 2, 11, 22, 33)
@@ -48,64 +49,73 @@ def zh_data(users):
     data = {}
     with db.session.begin_nested():
         for (
-                main_name,
-                code,
-                id_org,
-                id_role,
-                zh_date,
-                uuid_id_lim_list,
-                id_sdage,
-                geom,
-                zh_area,
+            main_name,
+            code,
+            id_org,
+            id_role,
+            zh_date,
+            uuid_id_lim_list,
+            id_sdage,
+            geom,
+            zh_area,
         ) in [
             (
-                    "zh1",
-                    "05CEN0189",
-                    2,  # id_org = 2 (not dynamic) because not same table bib_organismes used with the users
-                    user.id_role,
-                    date,
-                    uuid.uuid4(),
-                    id_sdage,
-                    geoalchemy2.shape.from_shape(
-                        Polygon(
-                            ((0.949631, 43.587447),
-                             (0.963364, 43.685843),
-                             (1.159744, 43.686836),
-                             (1.140518, 43.601372),
-                             (0.949631, 43.587447))
-                        )),
+                "zh1",
+                "05CEN0189",
+                2,  # id_org = 2 (not dynamic) because not same table bib_organismes used with the users
+                user.id_role,
+                date,
+                uuid.uuid4(),
+                id_sdage,
+                geoalchemy2.shape.from_shape(
                     Polygon(
-                        ((0.949631, 43.587447),
-                         (0.963364, 43.685843),
-                         (1.159744, 43.686836),
-                         (1.140518, 43.601372),
-                         (0.949631, 43.587447))
-                    ).area,
+                        (
+                            (0.949631, 43.587447),
+                            (0.963364, 43.685843),
+                            (1.159744, 43.686836),
+                            (1.140518, 43.601372),
+                            (0.949631, 43.587447),
+                        )
+                    )
+                ),
+                Polygon(
+                    (
+                        (0.949631, 43.587447),
+                        (0.963364, 43.685843),
+                        (1.159744, 43.686836),
+                        (1.140518, 43.601372),
+                        (0.949631, 43.587447),
+                    )
+                ).area,
             ),
             (
-                    "zh2",
-                    "05CEN0190",
-                    3,  # id_org = 2 (not dynamic) because not same table bib_organismes used with the users
-                    user.id_role,
-                    date,
-                    uuid.uuid4(),
-                    id_sdage,
-                    geoalchemy2.shape.from_shape(
-                           Polygon(
-                               ((6.536951065063476, 43.92445000463151),
-                                (6.536951065063477, 43.930075358202956),
-                                (6.546220779418944, 43.930075358202956),
-                                (6.546220779418944, 43.9244500046315),
-                                (6.536951065063476, 43.92445000463151))
-                           )
-                       ),
+                "zh2",
+                "05CEN0190",
+                3,  # id_org = 2 (not dynamic) because not same table bib_organismes used with the users
+                user.id_role,
+                date,
+                uuid.uuid4(),
+                id_sdage,
+                geoalchemy2.shape.from_shape(
                     Polygon(
-                        ((6.536951065063476, 43.92445000463151),
-                         (6.536951065063477, 43.930075358202956),
-                         (6.546220779418944, 43.930075358202956),
-                         (6.546220779418944, 43.9244500046315),
-                         (6.536951065063476, 43.92445000463151))
-                    ).area
+                        (
+                            (6.536951065063476, 43.92445000463151),
+                            (6.536951065063477, 43.930075358202956),
+                            (6.546220779418944, 43.930075358202956),
+                            (6.546220779418944, 43.9244500046315),
+                            (6.536951065063476, 43.92445000463151),
+                        )
+                    )
+                ),
+                Polygon(
+                    (
+                        (6.536951065063476, 43.92445000463151),
+                        (6.536951065063477, 43.930075358202956),
+                        (6.546220779418944, 43.930075358202956),
+                        (6.546220779418944, 43.9244500046315),
+                        (6.536951065063476, 43.92445000463151),
+                    )
+                ).area,
             ),
         ]:
             kwargs = {}
@@ -135,15 +145,9 @@ def ref_geo_data():
         for row in reader:
             with db.session.begin_nested():
                 # Parser la géométrie WKT en GeoAlchemy2
-                geom = geoalchemy2.shape.from_shape(
-                    wkt.loads(row["geom"]),
-                    srid=2154
-                )
+                geom = geoalchemy2.shape.from_shape(wkt.loads(row["geom"]), srid=2154)
 
-                geom_4326 = geoalchemy2.shape.from_shape(
-                    wkt.loads(row["geom_4326"]),
-                    srid=4326
-                )
+                geom_4326 = geoalchemy2.shape.from_shape(wkt.loads(row["geom_4326"]), srid=4326)
 
                 area = LAreas(
                     id_area=row["id_area"],
@@ -151,7 +155,7 @@ def ref_geo_data():
                     area_code=row["area_code"],
                     id_type=row["id_type"],
                     geom=geom,
-                    geom_4326=geom_4326
+                    geom_4326=geom_4326,
                 )
                 db.session.add(area)
         areas = db.session.query(LAreas).all()

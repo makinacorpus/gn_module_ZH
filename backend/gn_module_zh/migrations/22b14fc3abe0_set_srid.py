@@ -17,7 +17,8 @@ depends_on = None
 
 
 def upgrade():
-    op.execute("""
+    op.execute(
+        """
           UPDATE pr_zh.t_hydro_area
             SET geom = ST_Force2D(ST_MakeValid(geom));
     
@@ -377,7 +378,8 @@ CREATE OR REPLACE VIEW pr_zh.flora AS
         WITH DATA;
 
                 
-        """)
+        """
+    )
 
 
 def downgrade():
