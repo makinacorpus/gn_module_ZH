@@ -58,8 +58,7 @@ def upgrade():
 
 
 def downgrade():
-    op.execute(
-        """
+    op.execute("""
         DROP SCHEMA IF EXISTS pr_zh CASCADE;
         DELETE FROM gn_commons.t_medias where id_table_location = (SELECT id_table_location FROM gn_commons.bib_tables_location WHERE table_desc = 'Liste des zones humides');
 
@@ -73,5 +72,4 @@ def downgrade():
 
         DELETE FROM ref_nomenclatures.bib_nomenclatures_types WHERE source IN ('ZONES_HUMIDES', 'BASSINS_VERSANTS');
 
-        """
-    )
+        """)

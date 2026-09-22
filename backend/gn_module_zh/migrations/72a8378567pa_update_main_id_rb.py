@@ -17,8 +17,7 @@ depends_on = None
 
 
 def upgrade():
-    op.execute(
-        """
+    op.execute("""
         UPDATE pr_zh.t_zh tzh
         SET main_id_rb =
         (
@@ -37,14 +36,11 @@ def upgrade():
                 LIMIT 1
             ) AS a
         )
-        """
-    )
+        """)
 
 
 def downgrade():
-    op.execute(
-        """
+    op.execute("""
         UPDATE pr_zh.t_zh tzh
         SET main_id_rb = null
-        """
-    )
+        """)

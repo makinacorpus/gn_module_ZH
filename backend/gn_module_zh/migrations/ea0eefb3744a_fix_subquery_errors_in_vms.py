@@ -17,8 +17,7 @@ depends_on = None
 
 
 def upgrade():
-    op.execute(
-        """
+    op.execute("""
         DROP MATERIALIZED VIEW pr_zh.vm_vertebrates;
         DROP MATERIALIZED VIEW pr_zh.vm_invertebrates;
         DROP MATERIALIZED VIEW pr_zh.vm_flora;
@@ -311,13 +310,11 @@ def upgrade():
                     OR (bdc_statut.statut_type in ('Liste rouge', 'Réglementation', 'Protection', 'Directives européennes') and bdc_statut.cd_sig = 'TERFXFR')
                 )
                 GROUP BY taxref.nom_complet, taxref.nom_vern, taxref.classe, synthese_zh.id_zh, taxref.cd_nom, bdc_statut.statut_type, bdc_statut.article, bdc_statut.statut, bdc_statut.doc_url, synthese_zh.date_max, synthese_zh.observers, synthese_zh.organisme;
-        """
-    )
+        """)
 
 
 def downgrade():
-    op.execute(
-        """
+    op.execute("""
         DROP MATERIALIZED VIEW pr_zh.vm_vertebrates;
         DROP MATERIALIZED VIEW pr_zh.vm_invertebrates;
         DROP MATERIALIZED VIEW pr_zh.vm_flora;
@@ -601,5 +598,4 @@ def downgrade():
                     OR (bdc_statut.statut_type in ('Liste rouge', 'Réglementation', 'Protection', 'Directives européennes') and bdc_statut.cd_sig = 'TERFXFR')
                 )
                 GROUP BY taxref.nom_complet, taxref.nom_vern, taxref.classe, synthese_zh.id_zh, taxref.cd_nom, bdc_statut.statut_type, bdc_statut.article, bdc_statut.statut, bdc_statut.doc_url, synthese_zh.date_max, synthese_zh.observers, synthese_zh.organisme;
-        """
-    )
+        """)
