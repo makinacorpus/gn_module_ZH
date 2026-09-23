@@ -138,6 +138,12 @@ def zh_data(users):
 
 @pytest.fixture(scope="function")
 def ref_geo_data():
+    areas = db.session.query(LAreas).all()
+    print("\n\n\n\n=>", areas, "\n\n\n\n")
+    for area in areas:
+        if area.id_area == 661813:
+            print("\n\n\n\n=>", area.geom, "\n\n\n\n")
+    # return LAreas.query.all()
     csv.field_size_limit(int(1e7))  # 10 millions de caractères
 
     with open("backend/gn_module_zh/tests/l_areas.csv", "r", encoding="utf-8") as f:
@@ -159,4 +165,8 @@ def ref_geo_data():
                 )
                 db.session.add(area)
         areas = db.session.query(LAreas).all()
+        print("\n\n\n\n=>", areas, "\n\n\n\n")
+        for area in areas:
+            if area.id_area == 661813:
+                print("\n\n\n\n=>", area, "\n\n\n\n")
         return areas
