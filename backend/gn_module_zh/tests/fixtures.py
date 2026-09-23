@@ -6,6 +6,7 @@ import pytest
 import uuid
 from geonature.utils.env import db
 from ref_geo.models import LAreas
+from shapely.geometry import MultiPolygon
 from shapely import Polygon, wkt
 import geoalchemy2.shape
 
@@ -138,17 +139,26 @@ def zh_data(users):
 
 @pytest.fixture(scope="function")
 def ref_geo_data():
+    areas = db.session.query(LAreas).all()
     csv.field_size_limit(int(1e7))  # 10 millions de caractères
 
     with open("backend/gn_module_zh/tests/l_areas.csv", "r", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
             with db.session.begin_nested():
-                # Parser la géométrie WKT en GeoAlchemy2
-                geom = geoalchemy2.shape.from_shape(wkt.loads(row["geom"]), srid=2154)
-
-                geom_4326 = geoalchemy2.shape.from_shape(wkt.loads(row["geom_4326"]), srid=4326)
-
+                # Parse geometries
+                geom_shape = wkt.loads(row["geom"])
+                geom_4326_shape = wkt.loads(row["geom_4326"])
+                
+                if geom_shape.geom_type == 'Polygon':
+                    geom_shape = MultiPolygon([geom_shape])
+                if geom_4326_shape.geom_type == 'Polygon':
+                    geom_4326_shape = MultiPolygon([geom_4326_shape])
+                
+                # Convert to GeoAlchemy2 format
+                geom = geoalchemy2.shape.from_shape(geom_shape, srid=2154)
+                geom_4326 = geoalchemy2.shape.from_shape(geom_4326_shape, srid=4326)
+                
                 area = LAreas(
                     id_area=row["id_area"],
                     area_name=row["area_name"],
@@ -157,6 +167,7 @@ def ref_geo_data():
                     geom=geom,
                     geom_4326=geom_4326,
                 )
-                db.session.add(area)
+                db.session.merge(area)
+                db.session.commit()
         areas = db.session.query(LAreas).all()
         return areas
